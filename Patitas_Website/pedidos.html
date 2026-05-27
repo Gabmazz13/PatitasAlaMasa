@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hacer Pedido — Patitas Dulces</title>
+  <meta name="description" content="Arma tu pedido de postres naturales para mascotas. Selecciona productos, agrega los detalles de tu peludo y envíanos tu pedido por WhatsApp." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/pedidos.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo" aria-label="Patitas Dulces inicio">
+        <img src="assets/Many Paws.png" alt="" class="logo-img" />
+        Patitas Dulces
+      </a>
+
+      <div class="nav-cta">
+        <a
+          href="#"
+          class="btn btn-pill"
+          data-whatsapp-message="¡Hola Patitas Dulces! 🐾 Tengo una consulta sobre los pedidos."
+        >Escribinos por WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="pedidos-hero">
+      <div class="container">
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+        <h1>Armá el pedido perfecto para tu peludo</h1>
+        <p>Elegí tus postres favoritos, contanos los detalles del evento y mandamos tu pedido directo por WhatsApp.</p>
+      </div>
+    </section>
+
+    <div class="container pedidos-layout">
+
+      <!-- Catálogo -->
+      <section class="catalogo" aria-label="Catálogo de productos">
+        <h2>Catálogo</h2>
+        <div class="catalogo-grid" id="catalogo-grid">
+          <!-- Renderizado por js/pedidos.js -->
+        </div>
+      </section>
+
+      <!-- Panel pedido -->
+      <aside class="pedido-panel" aria-label="Resumen del pedido">
+        <h2>Tu pedido</h2>
+
+        <ul class="cart-list" id="cart-list">
+          <li class="cart-empty">Tu pedido está vacío. Agrega productos del catálogo.</li>
+        </ul>
+
+        <div class="cart-total">
+          <span>Total</span>
+          <span id="cart-total">S/ 0</span>
+        </div>
+
+        <form class="pedido-form" id="pedido-form" novalidate>
+          <div class="form-field">
+            <label for="nombre">Tu nombre *</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej. María Pérez" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="peludo">Nombre del peludo *</label>
+              <input type="text" id="peludo" name="peludo" required placeholder="Ej. Capitán" />
+            </div>
+            <div class="form-field">
+              <label for="especie">Especie</label>
+              <select id="especie" name="especie">
+                <option>Perro</option>
+                <option>Gato</option>
+                <option>Otro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="fecha">Fecha del evento *</label>
+            <input type="date" id="fecha" name="fecha" required />
+          </div>
+
+          <div class="form-field">
+            <label for="mensaje">Mensaje en el pastel (opcional)</label>
+            <input type="text" id="mensaje" name="mensaje" placeholder="Ej. ¡Feliz cumple Capi!" maxlength="60" />
+          </div>
+
+          <div class="form-field">
+            <label for="notas">Alergias / notas (opcional)</label>
+            <textarea id="notas" name="notas" placeholder="Ej. Es alérgico al pollo"></textarea>
+          </div>
+
+          <button type="submit" id="btn-submit" class="btn-submit" disabled>
+            💬 Enviar pedido por WhatsApp
+          </button>
+          <p class="form-note">Te conectamos directo con nuestro WhatsApp para confirmar disponibilidad y forma de pago.</p>
+        </form>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        © <span id="year">2026</span> Patitas Dulces · Hecho con 🐾 para tu mejor amigo
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/pedidos.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
