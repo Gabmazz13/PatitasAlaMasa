@@ -1,0 +1,18 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Dependencias (por si en el futuro agregás Node)
+node_modules/
+
+# Carpetas Claude/plans locales
+.claude/
