@@ -1,5 +1,5 @@
 /* ============================================
-   Patitas Dulces — Helpers compartidos
+   Patitas a la masa — Helpers compartidos
    ============================================
    REEMPLAZAR: cambia WHATSAPP_NUMBER por el número real.
    Formato Argentina internacional sin '+' ni espacios:

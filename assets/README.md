@@ -1,4 +1,4 @@
-# Assets — Patitas Dulces
+# Assets — Patitas a la masa
 
 Coloca aquí los archivos visuales del sitio.
 
@@ -9,13 +9,13 @@ reemplaza en `index.html` y `pedidos.html` el bloque:
 
 ```html
 <span class="logo-icon" aria-hidden="true">🐾</span>
-Patitas Dulces
+Patitas a la masa
 ```
 
 por:
 
 ```html
-<img src="assets/logo.png" alt="Patitas Dulces" class="logo-img" />
+<img src="assets/logo.png" alt="Patitas a la masa" class="logo-img" />
 ```
 
 ## Imágenes de producto (opcional)

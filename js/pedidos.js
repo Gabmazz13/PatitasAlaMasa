@@ -1,5 +1,5 @@
 /* ============================================
-   Patitas Dulces — Lógica de pedidos
+   Patitas a la masa — Lógica de pedidos
    ============================================ */
 
 // Precios en pesos argentinos (ARS) — ajustar según corresponda
@@ -112,7 +112,7 @@ function renderCart() {
 
 function buildOrderMessage(formData) {
   const lineas = [];
-  lineas.push('¡Hola Patitas Dulces! 🐾 Quiero hacer un pedido:');
+  lineas.push('¡Hola Patitas a la masa! 🐾 Quiero hacer un pedido:');
   lineas.push('');
 
   Object.entries(cart).forEach(([id, qty]) => {
