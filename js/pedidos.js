@@ -4,14 +4,11 @@
 
 // Precios en pesos argentinos (ARS) — ajustar según corresponda
 const PRODUCTS = [
-  { id: 'mini-cake-rosa',     nombre: 'Mini-Cake Rosa Cumpleañero',  precio: null, imgs: ['assets/Imagenes/pastel-rosa.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
-  { id: 'mini-cake-amarillo', nombre: 'Mini-Cake Dorado de Calabaza', precio: null, imgs: ['assets/Imagenes/pastel-amarillo.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
-  { id: 'mini-cake-clasico',  nombre: 'Mini-Cake Clásico Huellitas',  precio: null, imgs: ['assets/Imagenes/pastel-rosa-2.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
-  { id: 'mini-cake-cerdo',    nombre: 'Mini-Cake con Cerdo',         precio: null, imgs: ['assets/Imagenes/pastel-rosa.jpeg'], animales: ['Perro'], desc: 'Torta natural para mascotas elaborada con proteína cerdo, zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
-  { id: 'mini-cake-pollo',    nombre: 'Mini-Cake con Pollo',         precio: null, imgs: ['assets/Imagenes/pastel-amarillo.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína pollo, zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
-  { id: 'mini-cake-carne',    nombre: 'Mini-Cake con Carne',         precio: null, imgs: ['assets/Imagenes/pastel-rosa-2.jpeg'], animales: ['Perro'], desc: 'Torta natural para mascotas elaborada con proteína carne roja, zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-cerdo',    nombre: 'Mini-Cake con Cerdo',         precio: null, imgs: ['assets/Imagenes/pastel-rosa.jpeg', 'assets/Imagenes/pastel-amarillo.jpeg', 'assets/Imagenes/pastel-rosa-2.jpeg'], animales: ['Perro'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-pollo',    nombre: 'Mini-Cake con Pollo',         precio: null, imgs: ['assets/Imagenes/pastel-amarillo.jpeg', 'assets/Imagenes/pastel-rosa-2.jpeg', 'assets/Imagenes/pastel-rosa.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-carne',    nombre: 'Mini-Cake con Carne',         precio: null, imgs: ['assets/Imagenes/pastel-rosa-2.jpeg', 'assets/Imagenes/pastel-rosa.jpeg', 'assets/Imagenes/pastel-amarillo.jpeg'], animales: ['Perro'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
   { id: 'mini-pastel',        nombre: 'Mini Pastel Individual',       precio: null, emoji: '🍰', desc: 'Tamaño perfecto para mascotas pequeñas o festejos íntimos. Torta natural sin azúcar ni aditivos, elaborada con ingredientes seguros para tu mascota.' },
-  { id: 'galletas',           nombre: 'Galletas Huellitas (x10)',     precio: null, emoji: '🍪', desc: 'Galletas en forma de huellitas, con avena y manzana. Snacks nutritivos y deliciosos para tu peludo.' },
+  { id: 'galletas',           nombre: 'Galletas Huellitas (x10)',     precio: null, imgs: ['assets/Galletitas/Cookie.PNG', 'assets/Galletitas/Bolsa.jpeg'], desc: 'Bolsa de 250gr de galletitas hechas de avena y proteína. Snacks nutritivos y deliciosos para tu peludo.' },
 ];
 
 const cart = {};
@@ -50,12 +47,22 @@ function renderCatalog() {
   const colors = ['rosa', 'vainilla', 'menta', 'crema'];
   grid.innerHTML = PRODUCTS.map((p, i) => {
     const mainImg = p.imgs ? p.imgs[0] : p.img;
+    const hasMultipleImgs = p.imgs && p.imgs.length > 1;
     const media = mainImg
-      ? `<img src="${mainImg}" alt="${p.nombre}" />`
+      ? `<img src="${mainImg}" alt="${p.nombre}" class="cat-main-img" />`
       : `<span aria-hidden="true">${p.emoji || '🎂'}</span>`;
+    
+    const imgNav = hasMultipleImgs ? `
+      <div class="img-nav" style="display: flex; gap: 8px; justify-content: center; margin-top: 8px;">
+        ${p.imgs.map((img, idx) => `
+          <button class="img-dot" data-img-idx="${idx}" aria-label="Imagen ${idx + 1}" style="width: 8px; height: 8px; border-radius: 50%; border: 1px solid #ccc; cursor: pointer; background: ${idx === 0 ? '#f8b4d4' : '#eee'};"></button>
+        `).join('')}
+      </div>
+    ` : '';
+    
     return `
       <article class="cat-card" id="producto-${p.id}">
-        <div class="cat-image ${colors[i % colors.length]}">${media}</div>
+        <div class="cat-image ${colors[i % colors.length]}" data-product-id="${p.id}">${media}${imgNav}</div>
         <div class="cat-body">
           <h3>${p.nombre}</h3>
           <p class="desc">${p.desc}</p>
@@ -67,6 +74,26 @@ function renderCatalog() {
       </article>
     `;
   }).join('');
+
+  // Navegar entre imágenes
+  grid.querySelectorAll('.img-dot').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const imgIdx = parseInt(btn.getAttribute('data-img-idx'));
+      const productId = btn.closest('.cat-image').getAttribute('data-product-id');
+      const product = getProduct(productId);
+      if (product && product.imgs && product.imgs[imgIdx]) {
+        const imgEl = btn.closest('.cat-image').querySelector('.cat-main-img');
+        if (imgEl) {
+          imgEl.src = product.imgs[imgIdx];
+          // Actualizar estilos de los puntos
+          btn.closest('.img-nav').querySelectorAll('.img-dot').forEach((dot, idx) => {
+            dot.style.background = idx === imgIdx ? '#f8b4d4' : '#eee';
+          });
+        }
+      }
+    });
+  });
 
   grid.querySelectorAll('[data-add]').forEach((btn) => {
     btn.addEventListener('click', () => addToCart(btn.getAttribute('data-add')));
