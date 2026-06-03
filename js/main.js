@@ -6,7 +6,7 @@
    54 + 9 + código de área + número (ej: 5491112345678 para CABA)
 */
 
-const WHATSAPP_NUMBER = '5491100000000';
+const WHATSAPP_NUMBER = '5491178219196';
 
 function buildWhatsAppLink(message) {
   const text = encodeURIComponent(message || '');

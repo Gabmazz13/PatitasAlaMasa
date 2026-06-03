@@ -4,12 +4,14 @@
 
 // Precios en pesos argentinos (ARS) — ajustar según corresponda
 const PRODUCTS = [
-  { id: 'pastel-rosa',     nombre: 'Pastel Rosa Cumpleañero',  precio: 18000, img: 'assets/Imagenes/pastel-rosa.jpeg',     desc: 'Cobertura rosa con galleta de hueso y rosetones. Personalizado con el nombre de tu peludo.' },
-  { id: 'pastel-amarillo', nombre: 'Pastel Dorado de Calabaza', precio: 18000, img: 'assets/Imagenes/pastel-amarillo.jpeg', desc: 'Cobertura de calabaza natural con galleta de hueso al frente. Apto perros y gatos.' },
-  { id: 'pastel-clasico',  nombre: 'Pastel Clásico Huellitas',  precio: 17000, img: 'assets/Imagenes/pastel-rosa-2.jpeg',   desc: 'Modelo más pedido: cobertura rosa, galleta hueso y borde decorado.' },
-  { id: 'mini-pastel',     nombre: 'Mini Pastel Individual',    precio: 8500,  emoji: '🍰', desc: 'Tamaño perfecto para mascotas pequeñas o festejos íntimos.' },
-  { id: 'cupcakes',        nombre: 'Cupcakes Peluditos (x6)',   precio: 9500,  emoji: '🧁', desc: 'Set de 6 cupcakes con cobertura de yogur natural.' },
-  { id: 'galletas',        nombre: 'Galletas Huellitas (x10)',  precio: 5500,  emoji: '🍪', desc: 'Galletas en forma de huellitas, con avena y manzana.' },
+  { id: 'mini-cake-rosa',     nombre: 'Mini-Cake Rosa Cumpleañero',  precio: null, imgs: ['assets/Imagenes/pastel-rosa.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-amarillo', nombre: 'Mini-Cake Dorado de Calabaza', precio: null, imgs: ['assets/Imagenes/pastel-amarillo.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-clasico',  nombre: 'Mini-Cake Clásico Huellitas',  precio: null, imgs: ['assets/Imagenes/pastel-rosa-2.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína a elección (pollo, carne o cerdo), zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-cerdo',    nombre: 'Mini-Cake con Cerdo',         precio: null, imgs: ['assets/Imagenes/pastel-rosa.jpeg'], animales: ['Perro'], desc: 'Torta natural para mascotas elaborada con proteína cerdo, zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-pollo',    nombre: 'Mini-Cake con Pollo',         precio: null, imgs: ['assets/Imagenes/pastel-amarillo.jpeg'], animales: ['Perro', 'Gato'], desc: 'Torta natural para mascotas elaborada con proteína pollo, zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-cake-carne',    nombre: 'Mini-Cake con Carne',         precio: null, imgs: ['assets/Imagenes/pastel-rosa-2.jpeg'], animales: ['Perro'], desc: 'Torta natural para mascotas elaborada con proteína carne roja, zanahoria, harina de avena, huevo y agua. Decorada con frosting de vegetales y colores obtenidos naturalmente de ingredientes como remolacha y espinaca, sin colorantes artificiales. Ideal para cumpleaños y celebraciones especiales.' },
+  { id: 'mini-pastel',        nombre: 'Mini Pastel Individual',       precio: null, emoji: '🍰', desc: 'Tamaño perfecto para mascotas pequeñas o festejos íntimos. Torta natural sin azúcar ni aditivos, elaborada con ingredientes seguros para tu mascota.' },
+  { id: 'galletas',           nombre: 'Galletas Huellitas (x10)',     precio: null, emoji: '🍪', desc: 'Galletas en forma de huellitas, con avena y manzana. Snacks nutritivos y deliciosos para tu peludo.' },
 ];
 
 const cart = {};
@@ -33,11 +35,12 @@ function removeFromCart(id) {
 function cartTotal() {
   return Object.entries(cart).reduce((sum, [id, qty]) => {
     const p = getProduct(id);
-    return sum + (p ? p.precio * qty : 0);
+    return sum + (p && p.precio ? p.precio * qty : 0);
   }, 0);
 }
 
 function formatARS(n) {
+  if (n === null || n === undefined) return 'Consultar';
   return '$' + n.toLocaleString('es-AR');
 }
 
@@ -46,8 +49,9 @@ function renderCatalog() {
   if (!grid) return;
   const colors = ['rosa', 'vainilla', 'menta', 'crema'];
   grid.innerHTML = PRODUCTS.map((p, i) => {
-    const media = p.img
-      ? `<img src="${p.img}" alt="${p.nombre}" />`
+    const mainImg = p.imgs ? p.imgs[0] : p.img;
+    const media = mainImg
+      ? `<img src="${mainImg}" alt="${p.nombre}" />`
       : `<span aria-hidden="true">${p.emoji || '🎂'}</span>`;
     return `
       <article class="cat-card" id="producto-${p.id}">
