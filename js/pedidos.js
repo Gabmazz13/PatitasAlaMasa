@@ -47,22 +47,25 @@ function renderCatalog() {
   const colors = ['rosa', 'vainilla', 'menta', 'crema'];
   grid.innerHTML = PRODUCTS.map((p, i) => {
     const mainImg = p.imgs ? p.imgs[0] : p.img;
-    const hasMultipleImgs = p.imgs && p.imgs.length > 1;
     const media = mainImg
       ? `<img src="${mainImg}" alt="${p.nombre}" class="cat-main-img" />`
       : `<span aria-hidden="true">${p.emoji || '🎂'}</span>`;
     
+    const hasMultipleImgs = p.imgs && p.imgs.length > 1;
     const imgNav = hasMultipleImgs ? `
-      <div class="img-nav" style="display: flex; gap: 8px; justify-content: center; margin-top: 8px;">
+      <div class="img-nav">
         ${p.imgs.map((img, idx) => `
-          <button class="img-dot" data-img-idx="${idx}" aria-label="Imagen ${idx + 1}" style="width: 8px; height: 8px; border-radius: 50%; border: 1px solid #ccc; cursor: pointer; background: ${idx === 0 ? '#f8b4d4' : '#eee'};"></button>
+          <button class="img-dot" data-img-idx="${idx}" aria-label="Imagen ${idx + 1}" style="background: ${idx === 0 ? '#f8b4d4' : '#eee'};"></button>
         `).join('')}
       </div>
     ` : '';
     
     return `
-      <article class="cat-card" id="producto-${p.id}">
-        <div class="cat-image ${colors[i % colors.length]}" data-product-id="${p.id}">${media}${imgNav}</div>
+      <article class="cat-card" data-product-id="${p.id}">
+        <div class="cat-image ${colors[i % colors.length]}" data-product-id="${p.id}">
+          ${media}
+          ${imgNav}
+        </div>
         <div class="cat-body">
           <h3>${p.nombre}</h3>
           <p class="desc">${p.desc}</p>
@@ -75,28 +78,116 @@ function renderCatalog() {
     `;
   }).join('');
 
-  // Navegar entre imágenes
-  grid.querySelectorAll('.img-dot').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const imgIdx = parseInt(btn.getAttribute('data-img-idx'));
-      const productId = btn.closest('.cat-image').getAttribute('data-product-id');
-      const product = getProduct(productId);
-      if (product && product.imgs && product.imgs[imgIdx]) {
-        const imgEl = btn.closest('.cat-image').querySelector('.cat-main-img');
-        if (imgEl) {
-          imgEl.src = product.imgs[imgIdx];
-          // Actualizar estilos de los puntos
-          btn.closest('.img-nav').querySelectorAll('.img-dot').forEach((dot, idx) => {
-            dot.style.background = idx === imgIdx ? '#f8b4d4' : '#eee';
-          });
-        }
+  // Event listeners para tarjetas
+  grid.querySelectorAll('.cat-card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('img-dot') && !e.target.classList.contains('btn-add')) {
+        const productId = card.getAttribute('data-product-id');
+        openProductModal(productId);
       }
+    });
+
+    // Navegar entre imágenes en la tarjeta
+    card.querySelectorAll('.img-dot').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const imgIdx = parseInt(btn.getAttribute('data-img-idx'));
+        const productId = card.getAttribute('data-product-id');
+        const product = getProduct(productId);
+        if (product && product.imgs && product.imgs[imgIdx]) {
+          const imgEl = card.querySelector('.cat-main-img');
+          if (imgEl) {
+            imgEl.src = product.imgs[imgIdx];
+            btn.closest('.img-nav').querySelectorAll('.img-dot').forEach((dot, idx) => {
+              dot.style.background = idx === imgIdx ? '#f8b4d4' : '#eee';
+            });
+          }
+        }
+      });
     });
   });
 
   grid.querySelectorAll('[data-add]').forEach((btn) => {
-    btn.addEventListener('click', () => addToCart(btn.getAttribute('data-add')));
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      addToCart(btn.getAttribute('data-add'));
+    });
+  });
+}
+
+function openProductModal(productId) {
+  const product = getProduct(productId);
+  if (!product) return;
+
+  let modal = document.getElementById('product-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'product-modal';
+    modal.className = 'modal-overlay';
+    document.body.appendChild(modal);
+  }
+
+  const currentImageIdx = 0;
+  const imgSrcs = product.imgs || [product.img];
+  
+  modal.innerHTML = `
+    <div class="modal-content">
+      <button class="modal-close" data-close-modal>✕</button>
+      <div class="modal-gallery">
+        <div class="modal-image-container" data-product-id="${product.id}" data-current-idx="${currentImageIdx}">
+          <img src="${imgSrcs[currentImageIdx]}" alt="${product.nombre}" />
+        </div>
+        ${imgSrcs.length > 1 ? `
+          <div class="modal-img-nav">
+            ${imgSrcs.map((img, idx) => `
+              <button class="modal-img-dot ${idx === 0 ? 'active' : ''}" data-modal-img-idx="${idx}"></button>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+      <div class="modal-body">
+        <h3>${product.nombre}</h3>
+        <p class="desc">${product.desc}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-add" data-add="${product.id}" aria-label="Agregar ${product.nombre}">+ Agregar al pedido</button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+
+  // Cerrar modal
+  modal.querySelector('[data-close-modal]').addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+
+  // Navegar imágenes en modal
+  modal.querySelectorAll('.modal-img-dot').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const imgIdx = parseInt(btn.getAttribute('data-modal-img-idx'));
+      const container = modal.querySelector('.modal-image-container');
+      const imgEl = container.querySelector('img');
+      
+      imgEl.src = imgSrcs[imgIdx];
+      container.setAttribute('data-current-idx', imgIdx);
+      
+      modal.querySelectorAll('.modal-img-dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === imgIdx);
+      });
+    });
+  });
+
+  // Agregar al carrito desde modal
+  modal.querySelector('[data-add]').addEventListener('click', () => {
+    addToCart(product.id);
+    modal.classList.remove('active');
   });
 }
 
